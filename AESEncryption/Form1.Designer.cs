@@ -103,7 +103,7 @@ namespace AESEncryption
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(115, 31);
             button3.TabIndex = 7;
-            button3.Text = "Decrypt file";
+            button3.Text = "Encrypted file";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -113,9 +113,9 @@ namespace AESEncryption
             label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             label3.Location = new System.Drawing.Point(8, 93);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(336, 20);
+            label3.Size = new System.Drawing.Size(268, 20);
             label3.TabIndex = 4;
-            label3.Text = "Provide password to use for decryption (16 chars)";
+            label3.Text = "Provide password to use for decryption";
             // 
             // textBoxDcryptPassword
             // 
@@ -133,9 +133,9 @@ namespace AESEncryption
             label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             label4.Location = new System.Drawing.Point(8, 25);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(244, 20);
+            label4.Size = new System.Drawing.Size(201, 20);
             label4.TabIndex = 1;
-            label4.Text = "Enter encrypted text (base64 string)";
+            label4.Text = "Enter path file encrypted text";
             // 
             // textBoxEncrypted
             // 

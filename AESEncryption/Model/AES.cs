@@ -149,6 +149,77 @@ namespace AESEncryption.Model
             Console.WriteLine("File đã được giải mã và lưu vào: " + outputFilePath);
         }
 
+        public static void DecryptFile(string inputFilePath, string key, int r)
+        {
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+
+            byte[] cipherBytes = File.ReadAllBytes(inputFilePath);
+
+            int numBlocks = cipherBytes.Length / BlockSize;
+
+            byte[] decryptedBytes = new byte[numBlocks * BlockSize];
+
+            for (int blockIndex = 0; blockIndex < numBlocks; blockIndex++)
+            {
+                byte[][] state = new byte[4][];
+                for (int i = 0; i < 4; i++)
+                {
+                    state[i] = new byte[4];
+                }
+
+                for (int i = 0; i < BlockSize; i++)
+                {
+                    state[i % 4][i / 4] = cipherBytes[blockIndex * BlockSize + i];
+                }
+
+                byte[][] w = KeyExpansion(keyBytes);
+
+                AddRoundKey(state, w, r);
+
+                for (int round = r-1; round > 0; round--)
+                {
+                    InvShiftRows(state);
+                    InvSubBytes(state);
+                    AddRoundKey(state, w, round);
+                    InvMixColumns(state);
+                }
+
+                InvShiftRows(state);
+                InvSubBytes(state);
+                AddRoundKey(state, w, 0);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        decryptedBytes[blockIndex * BlockSize + i * 4 + j] = state[j][i];
+                    }
+                }
+            }
+
+            // Xóa các byte 0 được thêm vào cuối block nếu có
+            int paddingLength = decryptedBytes.Length;
+            for (int i = decryptedBytes.Length - 1; i >= 0; i--)
+            {
+                if (decryptedBytes[i] == 0)
+                {
+                    paddingLength--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Array.Resize(ref decryptedBytes, paddingLength);
+
+            // Tạo tên file đích
+
+            // Ghi dữ liệu đã giải mã ra file mới
+            File.WriteAllBytes("_decrypted.txt", decryptedBytes);
+
+        }
+
         private static void SubBytes(byte[][] state)
         {
             for (int i = 0; i < 4; i++)

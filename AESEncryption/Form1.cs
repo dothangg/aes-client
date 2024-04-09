@@ -140,9 +140,6 @@ namespace AESEncryption
 
         static void DecryptReceivedFile(string filePath, string key)
         {
-            // Xóa nội dung của file giải mã và ghi dữ liệu mới vào file
-            //using (FileStream fsEncrypted = new FileStream(filePath, FileMode.Open))
-
             AES.Decrypt(filePath, key);
         }
 
@@ -155,10 +152,22 @@ namespace AESEncryption
         {
             try
             {
-                //var data = Decrypt(textBoxEncrypted.Text, textBoxDcryptPassword.Text);
-                //textBoxDecryptOutput.Text = data.StringEncryptOrDecrypt;
-                //textTimeDecrypt.Text = data.DecrypEncryptTime.ToString("0.#############");
-                DecryptReceivedFile(textBoxEncrypted.Text, textBoxDcryptPassword.Text);
+                //DecryptReceivedFile(textBoxEncrypted.Text, textBoxDcryptPassword.Text);
+                if(textBoxDcryptPassword.Text.Length == 16)
+                {
+                    AES.DecryptFile(textBoxEncrypted.Text, textBoxDcryptPassword.Text, 10);
+                }else if (textBoxDcryptPassword.Text.Length == 24)
+                {
+                    AES.DecryptFile(textBoxEncrypted.Text, textBoxDcryptPassword.Text, 12);
+                }
+                else if (textBoxDcryptPassword.Text.Length == 32)
+                {
+                    AES.DecryptFile(textBoxEncrypted.Text, textBoxDcryptPassword.Text, 14);
+                }
+                else
+                {
+                    MessageBox.Show("Password's invalid!");
+                }
             }
             catch (Exception ex)
             {
@@ -189,6 +198,7 @@ namespace AESEncryption
         {
             textBoxEncrypted.Enabled = textBoxEncrypted.Text.Length > 0;
             buttonDecrypt.Enabled = textBoxEncrypted.Text.Length > 0;
+            label3.Text = $"Provide password to use for descryption ({textBoxDcryptPassword.Text.Length} chars)";
         }
 
 
